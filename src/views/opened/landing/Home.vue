@@ -14,15 +14,51 @@
       </div>
     </header>
 
-    <section v-if="!selectedNGO" class="bg-[#003366] text-white py-20 px-6 text-center">
-      <div class="max-w-4xl mx-auto">
-        <h1 class="text-4xl md:text-6xl font-black mb-6 leading-tight">Empower Ethiopia's Future</h1>
-        <p class="text-blue-100 text-xl opacity-90 leading-relaxed">
-          Support verified non-profit organizations through Wegagen Bank's end-to-end encrypted donation portal. 
-          Your contribution directly impacts lives across the nation.
-        </p>
+ <section v-if="!selectedNGO" class="relative bg-[#003366] overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <svg class="w-full h-full" fill="none" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <path d="M0 100 L100 0" stroke="white" stroke-width="0.1" />
+      <path d="M0 80 L80 0" stroke="white" stroke-width="0.1" />
+      <path d="M0 60 L60 0" stroke="white" stroke-width="0.1" />
+    </svg>
+  </div>
+
+  <div class="relative max-w-7xl mx-auto px-6 py-24 md:py-32 flex flex-col items-center text-center">
+    <div class="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-400/30 px-4 py-2 rounded-full mb-8 backdrop-blur-sm">
+      <span class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+      </span>
+      <span class="text-xs font-bold text-blue-100 uppercase tracking-widest">Verified Multi-Merchant Portal</span>
+    </div>
+
+    <div class="max-w-4xl">
+      <h1 class="text-4xl md:text-7xl font-black text-white mb-8 leading-[1.1] tracking-tight">
+        Empower Ethiopia’s <span class="text-[#ef7d00]">Future</span>
+      </h1>
+      <p class="text-blue-100 text-lg md:text-xl opacity-90 leading-relaxed mb-10 max-w-3xl mx-auto">
+        Wegagen Bank’s secure gateway allows donors from anywhere in the world to contribute directly to verified NGOs and local organizations. Select a merchant from the directory below to begin your secure transaction.
+      </p>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-8 pt-10 border-t border-white/10">
+        <div class="text-center">
+          <div class="text-2xl font-black text-white">100%</div>
+          <div class="text-[10px] text-blue-300 uppercase font-bold tracking-widest">Direct Transfer</div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl font-black text-white">256-bit</div>
+          <div class="text-[10px] text-blue-300 uppercase font-bold tracking-widest">AES Encryption</div>
+        </div>
+        <div class="text-center hidden md:block">
+          <div class="text-2xl font-black text-white">24/7</div>
+          <div class="text-[10px] text-blue-300 uppercase font-bold tracking-widest">Global Access</div>
+        </div>
       </div>
-    </section>
+    </div>
+  </div>
+
+  <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-50 to-transparent"></div>
+</section>
 
    <main class="max-w-7xl mx-auto px-6 py-12 flex-grow">
   <div v-if="!selectedNGO" class="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -235,6 +271,70 @@
     </div>
   </div>
 </main>
+<footer class="bg-white border-t border-slate-200 pt-16 pb-8">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+      
+      <div class="col-span-1 md:col-span-1 flex flex-col items-center md:items-start">
+        <img src="../../../assets/img/wegagen.png" alt="Wegagen Logo" class="h-10 mb-6 grayscale opacity-80 hover:grayscale-0 transition-all" />
+        <p class="text-slate-500 text-sm leading-relaxed text-center md:text-left">
+          Wegagen Bank S.C. is committed to fostering a culture of giving through secure, transparent digital financial solutions.
+        </p>
+      </div>
+
+      <div class="text-center md:text-left">
+        <h4 class="text-[#003366] font-black text-xs uppercase tracking-widest mb-6">Support Portal</h4>
+        <ul class="text-slate-400 text-sm space-y-3">
+          <li><a href="#" class="hover:text-[#ef7d00] transition-colors">Merchant Verification</a></li>
+          <li><a href="#" class="hover:text-[#ef7d00] transition-colors">Donation Tracking</a></li>
+          <li><a href="#" class="hover:text-[#ef7d00] transition-colors">Developer API</a></li>
+        </ul>
+      </div>
+
+      <div class="text-center md:text-left">
+        <h4 class="text-[#003366] font-black text-xs uppercase tracking-widest mb-6">Compliance</h4>
+        <ul class="text-slate-400 text-sm space-y-3">
+          <li><a href="#" class="hover:text-[#ef7d00] transition-colors">Privacy Policy</a></li>
+          <li><a href="#" class="hover:text-[#ef7d00] transition-colors">Terms of Service</a></li>
+          <li><a href="#" class="hover:text-[#ef7d00] transition-colors">Refund Policy</a></li>
+        </ul>
+      </div>
+
+      <div class="text-center md:text-left">
+        <h4 class="text-[#003366] font-black text-xs uppercase tracking-widest mb-6">Contact Us</h4>
+        <div class="text-slate-400 text-sm space-y-1">
+          <p class="font-bold text-[#003366]">Customer Excellence</p>
+          <p>866</p>
+          <p>info@wegagen.com</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-slate-100 py-8 flex flex-wrap justify-center md:justify-between items-center gap-6">
+      <div class="flex items-center space-x-6">
+        <div class="flex flex-col items-center md:items-start">
+          <span class="text-[9px] font-black text-slate-300 uppercase tracking-tighter">Certified by</span>
+          <div class="flex gap-4 mt-1 grayscale opacity-50">
+            <span class="text-[10px] font-black border border-slate-300 px-2 py-0.5 rounded">PCI-DSS</span>
+            <span class="text-[10px] font-black border border-slate-300 px-2 py-0.5 rounded">ISO 27001</span>
+            <span class="text-[10px] font-black border border-slate-300 px-2 py-0.5 rounded">NBE</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-4">
+        <div class="h-8 w-8 bg-slate-50 rounded-full flex items-center justify-center text-slate-400 hover:bg-[#003366] hover:text-white transition-all cursor-pointer italic font-serif">f</div>
+        <div class="h-8 w-8 bg-slate-50 rounded-full flex items-center justify-center text-slate-400 hover:bg-[#003366] hover:text-white transition-all cursor-pointer italic font-serif">in</div>
+      </div>
+    </div>
+
+    <div class="text-center pt-8 border-t border-slate-50">
+      <p class="text-slate-400 text-[10px] uppercase tracking-[0.2em]">
+        &copy; 2026 Wegagen Bank S.C. | Empowering Ethiopia’s Future, One Donation at a Time.
+      </p>
+    </div>
+  </div>
+</footer>
   </div>
 </template>
 
