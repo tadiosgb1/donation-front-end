@@ -65,7 +65,7 @@ export default {
 
     
 
-       { name: "Dashboard", route: "first-dash", icon: "fas fa-gauge" },
+       { name: "Merchants", route: "first-dash", icon: "fas fa-gauge" },
 
        {
       name: "Users",
