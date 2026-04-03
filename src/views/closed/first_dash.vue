@@ -20,7 +20,7 @@
 
         <button
           @click="showAddMerchant = true"
-          class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl font-semibold text-sm transition-colors"
+          class="bg-primary hover:bg-primary text-white px-4 py-2 rounded-xl font-semibold text-sm transition-colors"
         >
           <i class="fas fa-plus mr-2"></i> Add Merchant
         </button>
