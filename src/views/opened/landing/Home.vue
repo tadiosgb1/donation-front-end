@@ -113,6 +113,7 @@
       </div>
 
       <div class="p-10">
+        <h1>Sender Information</h1>
         <div v-if="currentStep === 1" class="space-y-6">
           <div class="grid grid-cols-2 gap-4">
             <div class="space-y-1">

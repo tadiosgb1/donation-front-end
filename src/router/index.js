@@ -49,129 +49,129 @@ const routes = [
       { requiresGuest: true }
   },
 
-   {
-    path: "/subs", name: "subs",
-    component: Subscription,
-    meta:
-      { requiresGuest: true }
-  },
+  //  {
+  //   path: "/subs", name: "subs",
+  //   component: Subscription,
+  //   meta:
+  //     { requiresGuest: true }
+  // },
 
 
-    {
-    path: "/festival", name: "Festival",
-    component: Festival,
-    meta:
-      { requiresGuest: true }
-     },
+    // {
+    // path: "/festival", name: "Festival",
+    // component: Festival,
+    // meta:
+    //   { requiresGuest: true }
+    //  },
 
 
-      {
-    path: "/remitance", name: "remitance",
-    component: Remitance,
-    meta:
-      { requiresGuest: true }
-     },
+    //   {
+    // path: "/remitance", name: "remitance",
+    // component: Remitance,
+    // meta:
+    //   { requiresGuest: true }
+    //  },
 
-       {
-    path: "/remit", name: "remit",
-    component: Remit,
-    meta:
-      { requiresGuest: true }
-     },
+    //    {
+    // path: "/remit", name: "remit",
+    // component: Remit,
+    // meta:
+    //   { requiresGuest: true }
+    //  },
 
-      {
-    path: "/hosted", name: "hosted",
-    component: Hosted,
-    meta:
-      { requiresGuest: true }
-     },
+    //   {
+    // path: "/hosted", name: "hosted",
+    // component: Hosted,
+    // meta:
+    //   { requiresGuest: true }
+    //  },
 
-   {
-    path: "/silent", name: "silent",
-    component: Silent,
-    meta:
-      { requiresGuest: true }
-     },
+  //  {
+  //   path: "/silent", name: "silent",
+  //   component: Silent,
+  //   meta:
+  //     { requiresGuest: true }
+  //    },
 
-{
-    path: "/unim", name: "unim",
-    component: UnifiedM,
-    meta:
-      { requiresGuest: true }
-     },
+// {
+//     path: "/unim", name: "unim",
+//     component: UnifiedM,
+//     meta:
+//       { requiresGuest: true }
+//      },
      
 
-     {
-    path: "/unified", name: "unified",
-    component: Unified,
-    meta:
-      { requiresGuest: true }
-     },
+    //  {
+    // path: "/unified", name: "unified",
+    // component: Unified,
+    // meta:
+    //   { requiresGuest: true }
+    //  },
 
-       {
-    path: "/haile", name: "haile",
-    component: Haile,
-    meta:
-      { requiresGuest: true }
-     },
+    //    {
+    // path: "/haile", name: "haile",
+    // component: Haile,
+    // meta:
+    //   { requiresGuest: true }
+    //  },
 
-     {
-    path: "/add-donate", name: "add-donate",
-    component:donateMerchantAdd,
-    meta:
-      { requiresGuest: true }
-     },
-    {
-    path: "/donates", name: "donates",
-    component:Donates,
-    meta:
-      { requiresGuest: true }
-     },
-
-
-{
-    path: "/rest", name: "rest",
-    component: RestApi,
-    meta:
-      { requiresGuest: true }
-     },
-{
-    path: "/rest-tr", name: "rest-tr",
-    component: Resttransactions,
-    meta:
-      { requiresGuest: true }
-     },
-
-     {
-    path: '/payment/:id', // Matches your API requirement
-    name: 'TransactionDetail',
-    component: trDetail,
-    props: true, // This maps :id to the component's "id" prop
-    meta: { title: 'Wegagen | Payment Details' }
-  },
-
-     {
-    path: "/rest1", name: "rest1",
-    component: RestApi1,
-    meta:
-      { requiresGuest: true }
-     },
+    //  {
+    // path: "/add-donate", name: "add-donate",
+    // component:donateMerchantAdd,
+    // meta:
+    //   { requiresGuest: true }
+    //  },
+    // {
+    // path: "/donates", name: "donates",
+    // component:Donates,
+    // meta:
+    //   { requiresGuest: true }
+    //  },
 
 
-     {
-    path: "/sdk", name: "sdk",
-    component: Sdk,
-    meta:
-      { requiresGuest: true }
-     },
+// {
+//     path: "/rest", name: "rest",
+//     component: RestApi,
+//     meta:
+//       { requiresGuest: true }
+//      },
+// {
+//     path: "/rest-tr", name: "rest-tr",
+//     component: Resttransactions,
+//     meta:
+//       { requiresGuest: true }
+//      },
+
+  //    {
+  //   path: '/payment/:id', // Matches your API requirement
+  //   name: 'TransactionDetail',
+  //   component: trDetail,
+  //   props: true, // This maps :id to the component's "id" prop
+  //   meta: { title: 'Wegagen | Payment Details' }
+  // },
+
+    //  {
+    // path: "/rest1", name: "rest1",
+    // component: RestApi1,
+    // meta:
+    //   { requiresGuest: true }
+    //  },
 
 
-       {
-    path: "/onboard", name: "onboard",
-    component: Onboard,
-    meta:
-      { requiresGuest: true }
-     },
+    //  {
+    // path: "/sdk", name: "sdk",
+    // component: Sdk,
+    // meta:
+    //   { requiresGuest: true }
+    //  },
+
+
+    //    {
+    // path: "/onboard", name: "onboard",
+    // component: Onboard,
+    // meta:
+    //   { requiresGuest: true }
+    //  },
 
 
   {
