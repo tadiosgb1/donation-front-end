@@ -20,8 +20,7 @@
                 alt="Logo"
                 class="h-9 w-9 rounded-xl object-cover ring-2 ring-slate-100 group-hover:ring-primary/30 transition-all shadow-sm"
               />
-              <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
-            </div>
+           </div>
             <div class="flex flex-col">
               <h1 class="text-lg font-black text-dprimary leading-none tracking-tight group-hover:text-primary transition-colors">
                 Wegagen 
