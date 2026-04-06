@@ -62,9 +62,6 @@ export default {
       showTitle: false,
       is_superuser: false,
       menuItems: [
-
-    
-
        { name: "Merchants", route: "first-dash", icon: "fas fa-gauge" },
 
        {

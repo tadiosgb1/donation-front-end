@@ -207,7 +207,7 @@
 <script>
 import Sidebar from "@/components/layouts/leftSidevar.vue";
 import Profile from "./Profile.vue";
-
+import axios from 'axios'
 export default {
   name: "AppLayout",
   components: { Sidebar, Profile },
@@ -274,10 +274,34 @@ export default {
     toggleNotificationDropdown() {
       this.isNotificationDropdownOpen = !this.isNotificationDropdownOpen;
     },
-    logout() {
-      localStorage.clear();
-      this.$router.push("/");
-    },
+  async logout() {
+  try {
+    const baseURL = import.meta.env.VITE_APP_BASE_URL_LOCAL;
+     localStorage.clear();
+    // 1. Tell the server to kill the cookie
+    const res=await axios.post(`${baseURL}/auth/logout`, {}, { 
+      withCredentials: true 
+    });
+
+
+    console.log("res",res);
+    // 2. Clear any leftover non-sensitive data
+   
+
+    // 3. Go to login
+    // After the cookie is cleared, checkServerAuth() will return false
+    // allowing the user to finally stay on the login page.
+  
+          this.$router.push("/login");
+    
+   
+
+  } catch (error) {
+    console.error("Logout failed", error);
+    // Even if it fails, try to force redirect
+    this.$router.push("/login");
+  }
+}
   },
 };
 </script>

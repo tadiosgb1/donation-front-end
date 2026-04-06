@@ -96,7 +96,7 @@
 
 <script>
 import Toast from "../../../components/Toast.vue";
-
+import axios from 'axios'
 export default {
   name: "WegagenLogin",
   components: { Toast },
@@ -109,22 +109,50 @@ export default {
     };
   },
   methods: {
-    async login() {
+   async login() {
       this.error = "";
       this.loading = true;
-      try {
-        const response = await this.$apiPost("/auth/login", this.form);
-       
-   console.log("response",response);
 
-        localStorage.setItem("access", response.token);
+      // Access the Vite environment variable
+      const baseURL = import.meta.env.VITE_APP_BASE_URL_LOCAL;
+
+      try {
+        const response = await axios.post(`${baseURL}/auth/login`, this.form, {
+          // CRITICAL: withCredentials must be OUTSIDE of the headers object
+          withCredentials: true, 
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        console.log("Login Success:", response.data);
+
+        // If your backend sends a token in the body, store it.
+        // If it's ONLY an HttpOnly cookie, the browser handles it automatically.
+        if (response.data.token) {
+          localStorage.setItem("access", response.data.token);
+        }
 
         this.$refs.toast?.showSuccessToastMessage("Login successful!");
+        
         setTimeout(() => {
-          this.$router.push({ path: "/dashboard/first-dash" });
+         this.$router.push({ path: "/dashboard/first-dash" });
         }, 1000);
-      } catch (error) {
-        this.error = error.response?.data?.message || "Login failed.";
+
+      } catch (err) {
+        console.error("Axios Error Object:", err);
+
+        // 1. Check if the server responded (e.g., 401 Unauthorized)
+        if (err.response) {
+          this.error = err.response.data?.message || "Invalid credentials.";
+        } 
+        // 2. Check if the request was blocked (CORS, SSL, or Server Down)
+        else if (err.request) {
+          this.error = "Security/Network Error: Ensure you have accepted the SSL certificate at the API IP address.";
+        } 
+        else {
+          this.error = "An unexpected error occurred.";
+        }
       } finally {
         this.loading = false;
       }
@@ -132,7 +160,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 /* Centering animations */
 @keyframes popIn {
