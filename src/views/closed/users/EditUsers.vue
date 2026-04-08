@@ -68,11 +68,12 @@ export default {
   methods: {
     async submitForm() {
       this.loading = true;
+      const userId = this.data?.id; 
       const BASE_URL = import.meta.env.VITE_APP_BASE_URL_LOCAL;
 
       try {
         // ✅ PUT request for editing user
-        const res = await axios.patch(`${BASE_URL}/users`, this.form, { withCredentials: true });
+        const res = await axios.patch(`${BASE_URL}/users/${userId}`, this.form, { withCredentials: true });
 
         if (res) {
           this.$root.$refs.toast.showToast('User updated successfully', 'success');
