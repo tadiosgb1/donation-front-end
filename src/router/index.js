@@ -6,7 +6,7 @@ import Home from '../views/opened/landing/Home.vue'
 import Login from '../views/opened/auth/login.vue'
 import ResetPassword from '../views/opened/auth/ResetPassword.vue'
 import ForgotPasssword from '../views/opened/auth/forgotPassword.vue'
-import ActivateEmailMessage from '../views/opened/landing/activateEmailMessage.vue'
+
 import Registration from '../views/opened/auth/login.vue'
 import Reset from '../views/opened/auth/reset.vue';
 import AccessDenied from "../views/opened/auth/accessDenied.vue";
@@ -32,12 +32,7 @@ const routes = [
     component: Registration,
     meta: { requiresGuest: true }
   },
-  {
-    path: "/email-activate-message", 
-    name: "email-activate-message",
-    component: ActivateEmailMessage,
-    meta: { requiresGuest: true }
-  },
+ 
   {
     path: '/forgot-password',
     name: 'ForgotPassword',

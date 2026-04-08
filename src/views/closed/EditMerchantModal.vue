@@ -47,11 +47,6 @@
             <i class="fas fa-circle-notch animate-spin mr-2"></i> Saving...
           </span>
         </button>
-
-        <div v-if="message" :class="success ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'"
-          class="p-4 rounded-xl text-center text-sm font-medium animate-pulse">
-          {{ message }}
-        </div>
       </form>
     </div>
   </div>
@@ -59,10 +54,9 @@
 
 <script setup>
 import { ref, watch, onMounted, getCurrentInstance } from "vue";
+import axios from "axios";
 
-const { appContext } = getCurrentInstance(); 
-const $apiPatch = appContext.config.globalProperties.$apiPatch;
-
+const { appContext } = getCurrentInstance();
 const props = defineProps({
   merchant: { type: Object, required: true }
 });
@@ -77,14 +71,11 @@ const form = ref({
   secretKey: "",
   logo: ""
 });
-
 const logoFile = ref(null);
 const loading = ref(false);
-const message = ref("");
-const success = ref(false);
-
 const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
 
+// Populate form from props
 const syncForm = (data) => {
   form.value = {
     id: data.id || data._id || "",
@@ -98,25 +89,22 @@ const syncForm = (data) => {
 };
 
 onMounted(() => syncForm(props.merchant));
-
-watch(() => props.merchant, (newVal) => {
-  if (newVal) syncForm(newVal);
-}, { deep: true });
+watch(() => props.merchant, (newVal) => { if (newVal) syncForm(newVal); }, { deep: true });
 
 const handleFile = (e) => {
   const file = e.target.files[0];
   if (!file) return;
 
   if (!allowedTypes.includes(file.type)) {
-    message.value = "Only image files (PNG, JPG, JPEG, WEBP) are allowed.";
-    success.value = false;
     logoFile.value = null;
     e.target.value = "";
+    appContext.config.globalProperties.$root.$refs.toast.showToast(
+      "Only image files (PNG, JPG, JPEG, WEBP) are allowed.", "error"
+    );
     return;
   }
 
   logoFile.value = file;
-  message.value = "";
 };
 
 const resolveLogoUrl = (path) => {
@@ -125,14 +113,6 @@ const resolveLogoUrl = (path) => {
 };
 
 const submitEdit = async () => {
-  message.value = "";
-
-  if (logoFile.value && !allowedTypes.includes(logoFile.value.type)) {
-    success.value = false;
-    message.value = "Only image files (PNG, JPG, JPEG, WEBP) are allowed.";
-    return;
-  }
-
   loading.value = true;
 
   try {
@@ -144,18 +124,23 @@ const submitEdit = async () => {
     formData.append("secretKey", form.value.secretKey);
     if (logoFile.value) formData.append("logo", logoFile.value);
 
-    const headers = { "Content-Type": "multipart/form-data" };
+    const BASE_URL = import.meta.env.VITE_APP_BASE_URL_LOCAL;
 
-    // ✅ URL, payload, headers
-    await $apiPatch(`/merchants`, form.value.id,formData, headers);
+    await axios.patch(`${BASE_URL}/merchants/${form.value.id}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+      withCredentials: true
+    });
 
-    success.value = true;
-    message.value = "Changes saved successfully!";
+    appContext.config.globalProperties.$root.$refs.toast.showToast(
+      "Changes saved successfully!", "success"
+    );
     setTimeout(() => emit("merchant-updated"), 600);
 
   } catch (err) {
-    success.value = false;
-    message.value = err.response?.data?.message || "Error updating merchant";
+    console.error(err);
+    appContext.config.globalProperties.$root.$refs.toast.showToast(
+      err.response?.data?.message || "Error updating merchant", "error"
+    );
   } finally {
     loading.value = false;
   }

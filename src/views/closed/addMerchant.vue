@@ -50,12 +50,6 @@
           </span>
         </button>
 
-        <div v-if="message"
-          class="p-4 rounded-xl text-sm"
-          :class="success ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'">
-          {{ message }}
-        </div>
-
       </form>
     </div>
   </div>
@@ -63,12 +57,10 @@
 
 <script setup>
 import { ref, getCurrentInstance } from "vue";
+import axios from "axios";
 
 const { appContext } = getCurrentInstance();
-const $apiPost = appContext.config.globalProperties.$apiPost;
-
 const emit = defineEmits(['close','merchant-added']);
-
 const form = ref({
   companyName: "",
   description: "",
@@ -77,81 +69,70 @@ const form = ref({
   accessKey: "",
   secretKey: ""
 });
-
 const logoFile = ref(null);
 const loading = ref(false);
-const message = ref("");
-const success = ref(false);
-
 const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
 
 const handleFile = (e) => {
   const file = e.target.files[0];
-
   if (!file) return;
-
   if (!allowedTypes.includes(file.type)) {
-    message.value = "Only image files (PNG, JPG, JPEG, WEBP) are allowed.";
-    success.value = false;
     logoFile.value = null;
     e.target.value = "";
+    // show error toast
+    appContext.config.globalProperties.$root.$refs.toast.showToast(
+      "Only image files (PNG, JPG, JPEG, WEBP) are allowed.", "error"
+    );
     return;
   }
-
   logoFile.value = file;
-  message.value = "";
 };
 
 const submitMerchant = async () => {
-  message.value = "";
-
   if (!logoFile.value) {
-    success.value = false;
-    message.value = "Please upload a logo image.";
-    return;
-  }
-
-  if (!allowedTypes.includes(logoFile.value.type)) {
-    success.value = false;
-    message.value = "Only image files (PNG, JPG, JPEG, WEBP) are allowed.";
+    appContext.config.globalProperties.$root.$refs.toast.showToast(
+      "Please upload a logo image.", "error"
+    );
     return;
   }
 
   loading.value = true;
+  const formData = new FormData();
+  formData.append("companyName", form.value.companyName);
+  formData.append("description", form.value.description);
+  formData.append("category", form.value.category);
+  formData.append("merchantId", form.value.merchantId);
+  formData.append("accessKey", form.value.accessKey);
+  formData.append("secretKey", form.value.secretKey);
+  formData.append("logo", logoFile.value);
 
   try {
-    const formData = new FormData();
-    formData.append("companyName", form.value.companyName);
-    formData.append("description", form.value.description);
-    formData.append("category", form.value.category);
-    formData.append("merchantId", form.value.merchantId);
-    formData.append("accessKey", form.value.accessKey);
-    formData.append("secretKey", form.value.secretKey);
-    formData.append("logo", logoFile.value);
+    const BASE_URL = import.meta.env.VITE_APP_BASE_URL_LOCAL;
 
-    const headers = { "Content-Type": "multipart/form-data" };
+    const res = await axios.post(`${BASE_URL}/merchants`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+      withCredentials: true
+    });
 
-    // ✅ Use global API utility with URL, payload, headers
-    await $apiPost(`${import.meta.env.VITE_APP_BASE_URL_LOCAL}/merchants`, formData, headers);
+    if (res.data && res.data.error) {
+      appContext.config.globalProperties.$root.$refs.toast.showToast(res.data.error, "error");
+    } else {
+      appContext.config.globalProperties.$root.$refs.toast.showToast(
+        "Merchant registered successfully!", "success"
+      );
 
-    success.value = true;
-    message.value = "Merchant registered successfully!";
+      // reset form
+      form.value = { companyName: "", description: "", merchantId: "", accessKey: "", secretKey: "", category: "" };
+      logoFile.value = null;
 
-    form.value = {
-      companyName: "",
-      description: "",
-      merchantId: "",
-      accessKey: "",
-      secretKey: "",
-      category: ""
-    };
-    logoFile.value = null;
-
-    setTimeout(() => emit('merchant-added'), 500);
+      setTimeout(() => emit('merchant-added'), 500);
+    }
 
   } catch (err) {
-    success.value = false;
-    message.value = err.response?.data?.message || "Failed to register merchant";
+    console.error(err);
+    appContext.config.globalProperties.$root.$refs.toast.showToast(
+      err.response?.data?.message || "Failed to register merchant", "error"
+    );
   } finally {
     loading.value = false;
   }

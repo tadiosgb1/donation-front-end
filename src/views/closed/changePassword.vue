@@ -1,7 +1,7 @@
 <template>
   <div>
     <Toast ref="toast" />
-    
+
     <Teleport to="body">
       <transition name="auth-overlay">
         <div
@@ -10,37 +10,37 @@
           @click.self="$emit('close')"
         >
           <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden">
-            
+
             <!-- Header -->
             <div class="px-6 py-5 border-b flex justify-between items-center">
-              <h2 class="text-lg font-bold text-primary">Update Profile</h2>
+              <h2 class="text-lg font-bold text-primary">Change Password</h2>
               <button @click="$emit('close')" class="text-gray-400 hover:text-red-500">
                 ✕
               </button>
             </div>
 
             <!-- Form -->
-            <form @submit.prevent="updateProfile" class="p-6 space-y-5">
-              
-              <!-- Name -->
+            <form @submit.prevent="changePassword" class="p-6 space-y-5">
+
+              <!-- Current Password -->
               <div>
-                <label class="text-xs font-semibold text-gray-500">Name</label>
+                <label class="text-xs font-semibold text-gray-500">Current Password</label>
                 <input
-                  v-model="form.name"
-                  type="text"
+                  v-model="form.currentPassword"
+                  type="password"
                   class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none"
-                  placeholder="Enter name"
+                  placeholder="Enter current password"
                 />
               </div>
 
-              <!-- Email -->
+              <!-- New Password -->
               <div>
-                <label class="text-xs font-semibold text-gray-500">Email</label>
+                <label class="text-xs font-semibold text-gray-500">New Password</label>
                 <input
-                  v-model="form.email"
-                  type="email"
+                  v-model="form.newPassword"
+                  type="password"
                   class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none"
-                  placeholder="Enter email"
+                  placeholder="Enter new password"
                 />
               </div>
 
@@ -59,12 +59,12 @@
                   class="px-6 py-2 bg-primary text-white rounded-lg text-sm font-semibold"
                   :disabled="loading"
                 >
-                  <span v-if="!loading">Save</span>
+                  <span v-if="!loading">Update</span>
                   <span v-else>Updating...</span>
                 </button>
               </div>
-            </form>
 
+            </form>
           </div>
         </div>
       </transition>
@@ -75,9 +75,8 @@
 <script>
 import axios from "axios";
 import Toast from "../../components/Toast.vue";
-
 export default {
-  name: "Profile",
+  name: "ChangePassword",
   components: { Toast },
 
   props: {
@@ -88,58 +87,33 @@ export default {
     return {
       loading: false,
       form: {
-        name: "",
-        email: ""
+        currentPassword: "",
+        newPassword: ""
       }
     };
   },
 
-  watch: {
-    visible(val) {
-      if (val) this.loadProfile();
-    }
-  },
-
   methods: {
-    async loadProfile() {
+    async changePassword() {
       const BASE_URL = import.meta.env.VITE_APP_BASE_URL_LOCAL;
-      const id = localStorage.getItem("userId");
 
-      try {
-        const res = await axios.get(`${BASE_URL}/profile`, {
-          withCredentials: true // ✅ important
-        });
-
-        const data = res.data;
-
-        this.form.name = data.name;
-        this.form.email = data.email;
-
-      } catch (err) {
-        console.error(err);
-        this.$refs.toast.showToast("Failed to load profile", "error");
-      }
-    },
-
-    async updateProfile() {
-      const BASE_URL = import.meta.env.VITE_APP_BASE_URL_LOCAL;
       this.loading = true;
 
       try {
         const res = await axios.patch(
-          `${BASE_URL}/profile`,
+          `${BASE_URL}/profile/password`,
           this.form,
           {
             withCredentials: true // ✅ important
           }
         );
-
-        this.$root.$refs.toast.showToast('Updated Successfully', 'success');
-        this.$emit("updated", this.form);
+         this.$root.$refs.toast.showToast('Updated Successfully', 'success');
          this.$emit("close");
+         this.form.current_password = "";
+         this.form.new_password = "";
       } catch (err) {
         console.error(err);
-        this.$refs.toast.showToast("Update failed", "error");
+        this.$refs.toast.showToast("Failed to update password", "error");
       } finally {
         this.loading = false;
       }

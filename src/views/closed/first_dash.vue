@@ -1,5 +1,6 @@
 <template>
   <div class="min-h-screen bg-slate-50 p-6">
+    <!-- Header -->
     <div class="max-w-7xl mx-auto mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div>
         <h1 class="text-3xl font-black text-[#003366]">Merchant Donation Dashboard</h1>
@@ -13,27 +14,29 @@
             v-model="searchQuery"
             placeholder="Search merchants..."
             @input="filterMerchants"
-            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-gray-700 transition"
+            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary text-sm text-gray-700 transition"
           />
           <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
         </div>
 
         <button
           @click="showAddMerchant = true"
-          class="bg-primary hover:bg-primary text-white px-4 py-2 rounded-xl font-semibold text-sm transition-colors"
+          class="bg-primary hover:bg-dprimary text-white px-4 py-2 rounded-xl font-semibold text-sm transition-colors flex items-center gap-2"
         >
-          <i class="fas fa-plus mr-2"></i> Add Merchant
+          <i class="fas fa-plus"></i> Add Merchant
         </button>
       </div>
     </div>
 
+    <!-- Loading Spinner -->
     <div v-if="loading" class="flex justify-center items-center py-20">
-      <div class="animate-spin h-10 w-10 border-2 border-[#ef7d00] border-t-transparent rounded-full"></div>
+      <div class="animate-spin h-10 w-10 border-2 border-primary border-t-transparent rounded-full"></div>
     </div>
 
+    <!-- Merchants Grid -->
     <div v-else class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       <div v-for="merchant in filteredMerchants" :key="merchant.id || merchant._id"
-        class="bg-white rounded-3xl border border-slate-100 overflow-hidden transition group flex flex-col">
+        class="bg-white rounded-3xl border border-slate-100 overflow-hidden transition group flex flex-col shadow-md">
 
         <div class="h-48 overflow-hidden relative bg-slate-100 flex items-center justify-center">
           <img 
@@ -55,7 +58,7 @@
           <div class="flex gap-2 mt-4">
             <button
               @click="openEditModal(merchant)"
-              class="flex-1 text-white bg-[#ef7d00] px-4 py-2 rounded-lg hover:bg-[#d66b00] transition"
+              class="flex-1 text-white bg-primary px-4 py-2 rounded-lg hover:bg-dprimary transition"
             >
               Edit Profile
             </button>
@@ -75,6 +78,7 @@
       No merchants found.
     </div>
 
+    <!-- Add/Edit Modals -->
     <add-merchant
       v-if="showAddMerchant"
       @close="showAddMerchant = false"
@@ -91,12 +95,14 @@
 </template>
 
 <script setup>
-import { ref, getCurrentInstance, onMounted } from "vue";
+import { ref, onMounted, getCurrentInstance } from "vue";
+import axios from "axios";
 import AddMerchant from './addMerchant.vue';
 import EditMerchantModal from './EditMerchantModal.vue';
 
-const { proxy } = getCurrentInstance(); // to use this.$apiDelete
+const { proxy } = getCurrentInstance(); // for toast notifications
 
+const BASE_URL = import.meta.env.VITE_APP_BASE_URL_LOCAL;
 const BASE_URL_SOURCE = import.meta.env.VITE_APP_BASE_URL_LOCAL_SOURCE;
 
 const merchants = ref([]);
@@ -107,19 +113,22 @@ const showAddMerchant = ref(false);
 const showEditModal = ref(false);
 const selectedMerchant = ref(null);
 
+// Fetch merchants using Axios with credentials
 const fetchMerchants = async () => {
   loading.value = true;
   try {
-    const data = await proxy.$apiGet("/merchants");
-    merchants.value = data;
+    const res = await axios.get(`${BASE_URL}/merchants`, { withCredentials: true });
+    merchants.value = res.data || [];
     filterMerchants();
   } catch (err) {
     console.error("Fetch Error:", err);
+    proxy.$root.$refs.toast.showToast("Failed to fetch merchants", "error");
   } finally {
     loading.value = false;
   }
 };
 
+// Filter merchants
 const filterMerchants = () => {
   const query = searchQuery.value.toLowerCase();
   filteredMerchants.value = merchants.value.filter(m =>
@@ -128,11 +137,13 @@ const filterMerchants = () => {
   );
 };
 
+// Resolve logo URLs
 const resolveLogoUrl = (path) => {
   if (!path) return "";
   return path.startsWith("http") ? path : `${BASE_URL_SOURCE}${path}`;
 };
 
+// Open edit modal
 const openEditModal = (merchant) => {
   selectedMerchant.value = { ...merchant };
   showEditModal.value = true;
@@ -153,21 +164,18 @@ const handleMerchantAdded = () => {
   fetchMerchants();
 };
 
-// Delete merchant using this.$apiDelete("/merchants", id)
+// Delete merchant using Axios with credentials
 const confirmDelete = async (merchant) => {
   const confirmed = confirm(`Are you sure you want to delete ${merchant.companyName}?`);
   if (!confirmed) return;
 
   try {
-    await proxy.$apiDelete("/merchants", merchant.id || merchant._id);
-
-    // Remove deleted merchant from local array
-    // merchants.value = merchants.value.filter(m => m.id !== merchant.id && m._id !== merchant._id);
-    // filterMerchants();
-    proxy.$reloadPage();
+    await axios.delete(`${BASE_URL}/merchants/${merchant.id || merchant._id}`, { withCredentials: true });
+    proxy.$root.$refs.toast.showToast("Merchant deleted successfully", "success");
+    fetchMerchants();
   } catch (err) {
-    console.error("Failed to delete merchant:", err);
-    alert("Failed to delete merchant.");
+    console.error("Delete Error:", err);
+    proxy.$root.$refs.toast.showToast("Failed to delete merchant", "error");
   }
 };
 
@@ -181,7 +189,6 @@ onMounted(fetchMerchants);
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
 .grid > div {
   display: flex;
   flex-direction: column;

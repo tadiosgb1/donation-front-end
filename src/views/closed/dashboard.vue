@@ -116,11 +116,11 @@
                     <span class="text-xs font-bold uppercase tracking-tighter">My Profile</span>
                   </a>
                   
-                  <a href="#" class="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-slate-600 group/item">
+                  <a @click="changePasswordModal=true" class="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-slate-600 group/item">
                     <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 group-hover/item:bg-slate-900 group-hover/item:text-white transition-all">
                       <i class="fas fa-key text-xs"></i>
                     </div>
-                    <span class="text-xs font-bold uppercase tracking-tighter">Security</span>
+                    <span class="text-xs font-bold uppercase tracking-tighter">Password</span>
                   </a>
 
                   <div class="h-px bg-slate-100 my-2 mx-2"></div>
@@ -185,6 +185,11 @@
       @close="closeProfile"
       @updated="onProfileUpdated"
     />
+    <changePassword 
+    :visible="changePasswordModal"
+    @close="closePassowrd()"
+    />
+
   </div>
 </template>
 
@@ -207,10 +212,11 @@
 <script>
 import Sidebar from "@/components/layouts/leftSidevar.vue";
 import Profile from "./Profile.vue";
+import changePassword from "./changePassword.vue";
 import axios from 'axios'
 export default {
   name: "AppLayout",
-  components: { Sidebar, Profile },
+  components: { Sidebar, Profile ,changePassword},
   data() {
     return {
       showProfileModal: false,
@@ -222,12 +228,12 @@ export default {
       isNotificationDropdownOpen: false,
       screenWidth: window.innerWidth,
       currentLanguage: "English",
+      changePasswordModal:false,
     };
   },
   async created() {
     window.addEventListener("resize", this.handleResize);
     this.name = localStorage.getItem("name");
-
     try {
       const res = await this.$apiGetById(
         `/get_unread_notifications`,
@@ -242,6 +248,9 @@ export default {
     window.removeEventListener("resize", this.handleResize);
   },
   methods: {
+    closePassowrd(){
+     this.changePasswordModal=false
+    },
     openProfile() {
       this.isProfileDropdownOpen = false;
       this.showProfileModal = true;
