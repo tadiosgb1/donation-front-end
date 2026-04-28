@@ -18,7 +18,7 @@ alias: {
 },
 
 server: {
-host: '10.195.49.19', // allow external access
+host: '0.0.0.0',// allow external access
 port: 3000,
 strictPort: true,
  https: {
