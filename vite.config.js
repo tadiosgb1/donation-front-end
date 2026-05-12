@@ -19,7 +19,7 @@ alias: {
 
 server: {
 host: '0.0.0.0',// allow external access
-port: 3000,
+port: 5173,
 strictPort: true,
  https: {
     key: fs.readFileSync('./key.pem'),

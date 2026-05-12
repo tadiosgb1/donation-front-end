@@ -2,14 +2,23 @@
   <div class="min-h-screen flex flex-col font-sans bg-slate-50">
     <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <div class="flex items-center space-x-4">
-          <img src="../../../assets/img/wegagen.png" alt="Wegagen Bank" class="h-10 md:h-12" />
-          <div class="hidden md:block h-8 w-px bg-slate-200"></div>
-          <span class="hidden md:block text-[#003366] font-bold text-sm uppercase tracking-widest">Secure Gateway</span>
-        </div>
-        <div class="flex items-center space-x-2 text-slate-500 text-xs font-bold bg-slate-100 px-4 py-2 rounded-full border border-slate-200">
+        <div class="flex items-center space-x-3 text-slate-500 text-xs font-bold bg-slate-100 px-4 py-2 rounded-full border border-slate-200">
           <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
           <span>ENCRYPTED SESSION</span>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <div class="hidden md:flex items-center gap-2 text-[#003366]">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 border border-slate-200">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9a4 4 0 118 0v1h1a2 2 0 012 2v6a2 2 0 01-2 2H7a2 2 0 01-2-2v-6a2 2 0 012-2h1V9z"></path></svg>
+            </span>
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 border border-slate-200">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h18M3 12h18M3 19h18"></path></svg>
+            </span>
+          </div>
+          <div class="hidden md:block h-8 w-px bg-slate-200"></div>
+          <span class="hidden md:block text-[#003366] font-bold text-sm uppercase tracking-widest">Wegagen Bank</span>
+          <img src="../../../assets/img/wegagen.png" alt="Wegagen Bank" class="h-10 md:h-12" />
         </div>
       </div>
     </header>
@@ -34,10 +43,10 @@
 
     <div class="max-w-4xl">
       <h1 class="text-4xl md:text-7xl font-black text-white mb-8 leading-[1.1] tracking-tight">
-        Empower Ethiopia’s <span class="text-[#ef7d00]">Future</span>
+        Portal <span class="text-[#ef7d00]">Services</span>
       </h1>
       <p class="text-blue-100 text-lg md:text-xl opacity-90 leading-relaxed mb-10 max-w-3xl mx-auto">
-        Wegagen Bank’s secure gateway allows donors from anywhere in the world to contribute directly to verified NGOs and local organizations. Select a merchant from the directory below to begin your secure transaction.
+        Access Wegagen Bank's secure donation services portal to browse verified organizations, review their basic details, and complete fast, protected payments in one streamlined experience.
       </p>
 
       <div class="grid grid-cols-2 md:grid-cols-3 gap-8 pt-10 border-t border-white/10">
@@ -143,6 +152,25 @@
         </div>
 
         <div v-show="currentStep === 2" class="space-y-8">
+          <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200">
+            <div class="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
+              <div class="flex gap-4 items-start">
+                <div class="h-16 w-16 bg-white rounded-xl border border-slate-100 p-2 shrink-0 flex items-center justify-center">
+                  <img :src="resolveLogoUrl(selectedNGO.logo)" :alt="selectedNGO.companyName" class="max-h-full object-contain" />
+                </div>
+                <div>
+                  <h3 class="font-bold text-[#003366]">{{ selectedNGO.companyName }}</h3>
+                  <p class="text-sm text-slate-500 leading-relaxed">
+                    {{ selectedNGO.description?.substring(0, 120) }}{{ selectedNGO.description?.length > 120 ? '...' : '' }}
+                  </p>
+                </div>
+              </div>
+              <button @click="shareOrganization(selectedNGO)" class="self-start sm:self-center inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 text-sm font-bold hover:bg-slate-100 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+                Share
+              </button>
+            </div>
+          </div>
           <div class="space-y-4">
             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Donation Amount (USD)</h3>
             <div class="grid grid-cols-3 gap-3">
@@ -272,66 +300,51 @@
     </div>
   </div>
 </main>
-<footer class="bg-white border-t border-slate-200 pt-16 pb-8">
+<footer class="bg-white border-t border-slate-200 pt-14 pb-6">
   <div class="max-w-7xl mx-auto px-6">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 pb-10">
       
-      <div class="col-span-1 md:col-span-1 flex flex-col items-center md:items-start">
-        <img src="../../../assets/img/wegagen.png" alt="Wegagen Logo" class="h-10 mb-6 grayscale opacity-80 hover:grayscale-0 transition-all" />
-        <p class="text-slate-500 text-sm leading-relaxed text-center md:text-left">
+      <div class="flex flex-col items-center lg:items-start">
+        <img src="../../../assets/img/wegagen.png" alt="Wegagen Logo" class="h-10 mb-5" />
+        <p class="text-slate-600 text-sm leading-relaxed text-center lg:text-left max-w-md">
           Wegagen Bank S.C. is committed to fostering a culture of giving through secure, transparent digital financial solutions.
         </p>
       </div>
 
-      <div class="text-center md:text-left">
-        <h4 class="text-[#003366] font-black text-xs uppercase tracking-widest mb-6">Support Portal</h4>
-        <ul class="text-slate-400 text-sm space-y-3">
-          <li><a href="#" class="hover:text-[#ef7d00] transition-colors">Merchant Verification</a></li>
-          <li><a href="#" class="hover:text-[#ef7d00] transition-colors">Donation Tracking</a></li>
-          <li><a href="#" class="hover:text-[#ef7d00] transition-colors">Developer API</a></li>
-        </ul>
-      </div>
-
-      <div class="text-center md:text-left">
-        <h4 class="text-[#003366] font-black text-xs uppercase tracking-widest mb-6">Compliance</h4>
-        <ul class="text-slate-400 text-sm space-y-3">
-          <li><a href="#" class="hover:text-[#ef7d00] transition-colors">Privacy Policy</a></li>
-          <li><a href="#" class="hover:text-[#ef7d00] transition-colors">Terms of Service</a></li>
-          <li><a href="#" class="hover:text-[#ef7d00] transition-colors">Refund Policy</a></li>
-        </ul>
-      </div>
-
-      <div class="text-center md:text-left">
-        <h4 class="text-[#003366] font-black text-xs uppercase tracking-widest mb-6">Contact Us</h4>
-        <div class="text-slate-400 text-sm space-y-1">
-          <p class="font-bold text-[#003366]">Customer Excellence</p>
-          <p>866</p>
-          <p>info@wegagen.com</p>
+      <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6">
+        <h4 class="text-[#003366] font-extrabold text-sm uppercase tracking-wider mb-4 text-center lg:text-left">Contact Us</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm text-slate-700">
+          <p><span class="font-bold text-[#003366]">Call Center:</span> 866</p>
+          <p><span class="font-bold text-[#003366]">Phone:</span> +251 115 52 3800</p>
+          <p class="sm:col-span-2"><span class="font-bold text-[#003366]">Address:</span> Wegagen Tower, Ras Mekonen St, Addis Ababa</p>
+          <p><span class="font-bold text-[#003366]">Email:</span> info@wegagen.com</p>
+          <p><span class="font-bold text-[#003366]">SWIFT:</span> WEGAETAA</p>
         </div>
       </div>
     </div>
 
-    <div class="border-t border-slate-100 py-8 flex flex-wrap justify-center md:justify-between items-center gap-6">
-      <div class="flex items-center space-x-6">
-        <div class="flex flex-col items-center md:items-start">
-          <span class="text-[9px] font-black text-slate-300 uppercase tracking-tighter">Certified by</span>
-          <div class="flex gap-4 mt-1 grayscale opacity-50">
-            <span class="text-[10px] font-black border border-slate-300 px-2 py-0.5 rounded">PCI-DSS</span>
-            <span class="text-[10px] font-black border border-slate-300 px-2 py-0.5 rounded">ISO 27001</span>
-            <span class="text-[10px] font-black border border-slate-300 px-2 py-0.5 rounded">NBE</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="flex gap-4">
-        <div class="h-8 w-8 bg-slate-50 rounded-full flex items-center justify-center text-slate-400 hover:bg-[#003366] hover:text-white transition-all cursor-pointer italic font-serif">f</div>
-        <div class="h-8 w-8 bg-slate-50 rounded-full flex items-center justify-center text-slate-400 hover:bg-[#003366] hover:text-white transition-all cursor-pointer italic font-serif">in</div>
+    <div class="border-t border-slate-200 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <a href="https://wegagen.com/" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-[#003366] hover:underline">
+        Official Website: wegagen.com
+      </a>
+      <div class="flex flex-wrap gap-2 justify-center md:justify-end">
+        <a
+          v-for="social in socialLinks"
+          :key="social.label"
+          :href="social.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          :title="social.label"
+          class="h-10 w-10 inline-flex items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-[#003366] hover:bg-[#003366] hover:text-white transition-all"
+        >
+          <i :class="[social.icon, 'text-sm']"></i>
+        </a>
       </div>
     </div>
 
-    <div class="text-center pt-8 border-t border-slate-50">
-      <p class="text-slate-400 text-[10px] uppercase tracking-[0.2em]">
-        &copy; 2026 Wegagen Bank S.C. | Empowering Ethiopia’s Future, One Donation at a Time.
+    <div class="text-center pt-5">
+      <p class="text-slate-600 text-xs md:text-sm font-medium">
+        &copy; {{ new Date().getFullYear() }} Wegagen Bank S.C. All rights reserved.
       </p>
     </div>
   </div>
@@ -364,6 +377,16 @@ const sender = reactive({
 const expiryMonth = ref('');
 const expiryYear = ref('');
 const receiptData = ref(null);
+const socialLinks = [
+  { label: 'Facebook', url: 'https://www.facebook.com/wegagenbankofficial', icon: 'fab fa-facebook-f' },
+  { label: 'Telegram', url: 'https://t.me/wegagenbankofficial', icon: 'fab fa-telegram-plane' },
+  { label: 'X', url: 'https://x.com/wegagenbankoff', icon: 'fab fa-x-twitter' },
+  { label: 'Instagram', url: 'https://www.instagram.com/wegagenbankofficial/', icon: 'fab fa-instagram' },
+  { label: 'LinkedIn', url: 'https://www.linkedin.com/company/wegagenofficial', icon: 'fab fa-linkedin-in' },
+  { label: 'YouTube', url: 'https://www.youtube.com/@wegagenbankofficial', icon: 'fab fa-youtube' },
+  { label: 'TikTok', url: 'https://tiktok.com/@wegagenbankofficial', icon: 'fab fa-tiktok' },
+  { label: 'Website', url: 'https://wegagen.com/', icon: 'fas fa-globe' }
+];
 
 let microformInstance = null;
 let captureJwt = null;
@@ -469,6 +492,22 @@ const shareReceipt = async () => {
       text: `Receipt from Wegagen Bank for ${selectedNGO.value.companyName}`,
       url: window.location.href
     });
+  }
+};
+
+const shareOrganization = async (organization) => {
+  const text = `${organization.companyName} - ${organization.description?.substring(0, 120) || 'Verified donation organization'}`;
+  if (navigator.share) {
+    await navigator.share({
+      title: organization.companyName,
+      text,
+      url: window.location.href
+    });
+    return;
+  }
+
+  if (navigator.clipboard) {
+    await navigator.clipboard.writeText(`${organization.companyName}\n${text}\n${window.location.href}`);
   }
 };
 
