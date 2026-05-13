@@ -7,7 +7,7 @@
         <!-- ABSOLUTE LEFT: Platform Title -->
         <div class="flex flex-col text-left">
           <h1 class="text-[#044b62] font-extrabold text-base md:text-xl tracking-tight leading-none">
-            Wegagen International
+            Wegagen 
           </h1>
           <p class="text-slate-500 text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] mt-1">
             Donation Platform
@@ -17,7 +17,7 @@
         <!-- ABSOLUTE RIGHT: Bank Branding -->
         <div class="flex items-center space-x-3 md:space-x-5">
           <div class="hidden md:flex flex-col items-end">
-            <span class="text-[#044b62] font-black text-sm uppercase tracking-widest">
+            <span class="text-[#004360] font-black text-sm uppercase tracking-widest">
               Wegagen Bank
             </span>
           </div>
@@ -272,11 +272,11 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-[#044b62] text-white pt-16 pb-8 w-full">
+    <footer class="bg-[#004360] text-white pt-16 pb-8 w-full">
       <div class="w-full px-6 md:px-10">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 pb-12 border-b border-white/10">
           <div class="flex flex-col items-center lg:items-start">
-            <img src="../../../assets/img/wegagen.png" alt="Wegagen Logo" class="h-12 mb-6" />
+  
             <p class="text-blue-100/80 text-sm leading-relaxed text-center lg:text-left max-w-md">
               Wegagen Bank S.C. is committed to fostering a culture of giving through secure, transparent digital financial solutions.
             </p>
