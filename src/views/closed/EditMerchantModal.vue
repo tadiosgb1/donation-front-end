@@ -56,7 +56,9 @@
 import { ref, watch, onMounted, getCurrentInstance } from "vue";
 import axios from "axios";
 
-const { appContext } = getCurrentInstance();
+// Access the proxy (which contains global properties and refs)
+const { proxy } = getCurrentInstance();
+
 const props = defineProps({
   merchant: { type: Object, required: true }
 });
@@ -74,6 +76,21 @@ const form = ref({
 const logoFile = ref(null);
 const loading = ref(false);
 const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
+
+/**
+ * HELPER: Safe Toast Call
+ * Accesses the toast via $root.$refs as per your setup
+ */
+const showNotification = (message, type) => {
+  const toast = proxy?.$root?.$refs?.toast;
+  if (toast) {
+    toast.showToast(message, type);
+  } else {
+    // Fallback if toast ref is missing
+    console.warn("Toast ref not found. Message:", message);
+    alert(message); 
+  }
+};
 
 // Populate form from props
 const syncForm = (data) => {
@@ -98,9 +115,7 @@ const handleFile = (e) => {
   if (!allowedTypes.includes(file.type)) {
     logoFile.value = null;
     e.target.value = "";
-    appContext.config.globalProperties.$root.$refs.toast.showToast(
-      "Only image files (PNG, JPG, JPEG, WEBP) are allowed.", "error"
-    );
+    showNotification("Only image files (PNG, JPG, JPEG, WEBP) are allowed.", "error");
     return;
   }
 
@@ -131,16 +146,15 @@ const submitEdit = async () => {
       withCredentials: true
     });
 
-    appContext.config.globalProperties.$root.$refs.toast.showToast(
-      "Changes saved successfully!", "success"
-    );
+    showNotification("Changes saved successfully!", "success");
+    
+    // Slight delay to allow the user to see the success toast before closing
     setTimeout(() => emit("merchant-updated"), 600);
 
   } catch (err) {
     console.error(err);
-    appContext.config.globalProperties.$root.$refs.toast.showToast(
-      err.response?.data?.message || "Error updating merchant", "error"
-    );
+    const errMsg = err.response?.data?.message || "Error updating merchant";
+    showNotification(errMsg, "error");
   } finally {
     loading.value = false;
   }

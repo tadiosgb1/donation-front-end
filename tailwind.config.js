@@ -58,8 +58,8 @@ export default {
         // primary: '#FA7118',
           secondary: '#FF6B00',
           
-          dprimary:'#003366',
-          primary: '#003366',
+          dprimary:'#044b62',
+          primary: '#044b62',
 
           // dprimary:'#1ce670',
           // primary: '#27dd73',

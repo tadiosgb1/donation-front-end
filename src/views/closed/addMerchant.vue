@@ -59,30 +59,45 @@
 import { ref, getCurrentInstance } from "vue";
 import axios from "axios";
 
-const { appContext } = getCurrentInstance();
-const emit = defineEmits(['close','merchant-added']);
+// Access the global properties (where your toast likely lives)
+const { proxy } = getCurrentInstance();
+const emit = defineEmits(['close', 'merchant-added']);
+
 const form = ref({
   companyName: "",
   description: "",
-  category: "",
+  category: "General", // Added a default since it's used in formData
   merchantId: "",
   accessKey: "",
   secretKey: ""
 });
+
 const logoFile = ref(null);
 const loading = ref(false);
 const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
 
+// Helper function to call your toast safely
+const showNotification = (message, type) => {
+  // Try to find the toast in the global properties or the root
+  const toast = proxy?.$root?.$refs?.toast || proxy?.$toast;
+  
+  if (toast) {
+    toast.showToast(message, type);
+  } else {
+    // Fallback if toast ref is still not found
+    console.warn("Toast component not found. Message:", message);
+    alert(message); 
+  }
+};
+
 const handleFile = (e) => {
   const file = e.target.files[0];
   if (!file) return;
+  
   if (!allowedTypes.includes(file.type)) {
     logoFile.value = null;
     e.target.value = "";
-    // show error toast
-    appContext.config.globalProperties.$root.$refs.toast.showToast(
-      "Only image files (PNG, JPG, JPEG, WEBP) are allowed.", "error"
-    );
+    showNotification("Only image files (PNG, JPG, JPEG, WEBP) are allowed.", "error");
     return;
   }
   logoFile.value = file;
@@ -90,9 +105,7 @@ const handleFile = (e) => {
 
 const submitMerchant = async () => {
   if (!logoFile.value) {
-    appContext.config.globalProperties.$root.$refs.toast.showToast(
-      "Please upload a logo image.", "error"
-    );
+    showNotification("Please upload a logo image.", "error");
     return;
   }
 
@@ -114,12 +127,10 @@ const submitMerchant = async () => {
       withCredentials: true
     });
 
-    if (res.data && res.data.error) {
-      appContext.config.globalProperties.$root.$refs.toast.showToast(res.data.error, "error");
+    if (res.data?.error) {
+      showNotification(res.data.error, "error");
     } else {
-      appContext.config.globalProperties.$root.$refs.toast.showToast(
-        "Merchant registered successfully!", "success"
-      );
+      showNotification("Merchant registered successfully!", "success");
 
       // reset form
       form.value = { companyName: "", description: "", merchantId: "", accessKey: "", secretKey: "", category: "" };
@@ -130,9 +141,8 @@ const submitMerchant = async () => {
 
   } catch (err) {
     console.error(err);
-    appContext.config.globalProperties.$root.$refs.toast.showToast(
-      err.response?.data?.message || "Failed to register merchant", "error"
-    );
+    const errorMsg = err.response?.data?.message || "Failed to register merchant";
+    showNotification(errorMsg, "error");
   } finally {
     loading.value = false;
   }
