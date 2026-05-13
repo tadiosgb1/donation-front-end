@@ -1,27 +1,40 @@
 <template>
   <div class="min-h-screen flex flex-col font-sans bg-slate-50">
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <div class="flex items-center space-x-3 text-slate-500 text-xs font-bold bg-slate-100 px-4 py-2 rounded-full border border-slate-200">
-          <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-          <span>ENCRYPTED SESSION</span>
-        </div>
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
+    
+    <!-- Left Side: Platform Title -->
+    <div class="flex flex-col">
+      <h1 class="text-[#044b62] font-extrabold text-base md:text-xl tracking-tight leading-none">
+        Wegagen International
+      </h1>
+      <p class="text-slate-500 text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] mt-1">
+        Donation Platform
+      </p>
+    </div>
 
-        <div class="flex items-center space-x-4">
-          <div class="hidden md:flex items-center gap-2 text-[#003366]">
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 border border-slate-200">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9a4 4 0 118 0v1h1a2 2 0 012 2v6a2 2 0 01-2 2H7a2 2 0 01-2-2v-6a2 2 0 012-2h1V9z"></path></svg>
-            </span>
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 border border-slate-200">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h18M3 12h18M3 19h18"></path></svg>
-            </span>
-          </div>
-          <div class="hidden md:block h-8 w-px bg-slate-200"></div>
-          <span class="hidden md:block text-[#003366] font-bold text-sm uppercase tracking-widest">Wegagen Bank</span>
-          <img src="../../../assets/img/wegagen.png" alt="Wegagen Bank" class="h-10 md:h-12" />
-        </div>
+    <!-- Right Side: Bank Branding -->
+    <div class="flex items-center space-x-3 md:space-x-5">
+      <!-- Hidden on small screens, shown on md+ -->
+      <div class="hidden md:flex flex-col items-end">
+        <span class="text-[#044b62] font-black text-sm uppercase tracking-widest">
+          Wegagen Bank
+        </span>
+      
       </div>
-    </header>
+      
+      <!-- Vertical Divider (Hidden on small screens) -->
+      <div class="hidden md:block h-10 w-px bg-slate-200"></div>
+      
+      <!-- Bank Logo (Always visible, original colors preserved) -->
+      <img 
+        src="../../../assets/img/wegagen.png" 
+        alt="Wegagen Bank Logo" 
+        class="h-10 md:h-12 w-auto object-contain" 
+      />
+    </div>
+  </div>
+</header>
 
  <section v-if="!selectedNGO" class="relative bg-[#003366] overflow-hidden">
   <div class="absolute inset-0 opacity-10 pointer-events-none">
@@ -300,52 +313,52 @@
     </div>
   </div>
 </main>
-<footer class="bg-white border-t border-slate-200 pt-14 pb-6">
+<footer class="bg-[#044b62] text-white pt-16 pb-8">
   <div class="max-w-7xl mx-auto px-6">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 pb-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 pb-12 border-b border-white/10">
       
+      <!-- Brand Section -->
       <div class="flex flex-col items-center lg:items-start">
-        <img src="../../../assets/img/wegagen.png" alt="Wegagen Logo" class="h-10 mb-5" />
-        <p class="text-slate-600 text-sm leading-relaxed text-center lg:text-left max-w-md">
+        <!-- Logo filter removed to show original colors -->
+        <img src="../../../assets/img/wegagen.png" alt="Wegagen Logo " class="h-12 mb-6 rounded-full" />
+        <p class="text-blue-100/80 text-sm leading-relaxed text-center lg:text-left max-w-md">
           Wegagen Bank S.C. is committed to fostering a culture of giving through secure, transparent digital financial solutions.
         </p>
       </div>
 
-      <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6">
-        <h4 class="text-[#003366] font-extrabold text-sm uppercase tracking-wider mb-4 text-center lg:text-left">Contact Us</h4>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm text-slate-700">
-          <p><span class="font-bold text-[#003366]">Call Center:</span> 866</p>
-          <p><span class="font-bold text-[#003366]">Phone:</span> +251 115 52 3800</p>
-          <p class="sm:col-span-2"><span class="font-bold text-[#003366]">Address:</span> Wegagen Tower, Ras Mekonen St, Addis Ababa</p>
-          <p><span class="font-bold text-[#003366]">Email:</span> info@wegagen.com</p>
-          <p><span class="font-bold text-[#003366]">SWIFT:</span> WEGAETAA</p>
+      <!-- Contact Info Section -->
+      <div>
+        <h4 class="text-white font-bold text-xs uppercase tracking-[0.2em] mb-6 text-center lg:text-left opacity-70">Contact Us</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-sm">
+          <p class="flex flex-col"><span class="text-blue-200 font-medium text-xs uppercase mb-1">Call Center</span> <span class="text-lg font-semibold">866</span></p>
+          <p class="flex flex-col"><span class="text-blue-200 font-medium text-xs uppercase mb-1">Phone</span> +251 115 52 3800</p>
+          <p class="sm:col-span-2 flex flex-col"><span class="text-blue-200 font-medium text-xs uppercase mb-1">Address</span> Wegagen Tower, Ras Mekonen St, Addis Ababa</p>
+          <p class="flex flex-col"><span class="text-blue-200 font-medium text-xs uppercase mb-1">Email</span> info@wegagen.com</p>
+          <p class="flex flex-col"><span class="text-blue-200 font-medium text-xs uppercase mb-1">SWIFT</span> WEGAETAA</p>
         </div>
       </div>
     </div>
 
-    <div class="border-t border-slate-200 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
-      <a href="https://wegagen.com/" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-[#003366] hover:underline">
-        Official Website: wegagen.com
+    <!-- Bottom Bar -->
+    <div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <a href="https://wegagen.com/" target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-blue-200 hover:text-white transition-colors flex items-center gap-2">
+        <span>Official Website</span>
+        <span class="text-xs">→</span>
+        <span class="underline underline-offset-4">wegagen.com</span>
       </a>
-      <div class="flex flex-wrap gap-2 justify-center md:justify-end">
+
+      <div class="flex flex-wrap gap-3 justify-center md:justify-end">
         <a
           v-for="social in socialLinks"
           :key="social.label"
           :href="social.url"
           target="_blank"
           rel="noopener noreferrer"
-          :title="social.label"
-          class="h-10 w-10 inline-flex items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-[#003366] hover:bg-[#003366] hover:text-white transition-all"
+          class="h-10 w-10 inline-flex items-center justify-center rounded-full bg-white/10 border border-white/10 text-white hover:bg-white hover:text-[#044b62] transition-all duration-300"
         >
-          <i :class="[social.icon, 'text-sm']"></i>
+          <i :class="[social.icon, 'text-base']"></i>
         </a>
       </div>
-    </div>
-
-    <div class="text-center pt-5">
-      <p class="text-slate-600 text-xs md:text-sm font-medium">
-        &copy; {{ new Date().getFullYear() }} Wegagen Bank S.C. All rights reserved.
-      </p>
     </div>
   </div>
 </footer>
